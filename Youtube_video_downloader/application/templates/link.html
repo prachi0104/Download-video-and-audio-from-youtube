@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-image: url("{% static '1.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column; /* Added to stack elements vertically */
+        }
+
+        .container {
+            text-align: center; /* Center the text inside the container */
+            background: rgba(255, 255, 255, 0.7); /* Semi-transparent white background for better readability */
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            color: blue;
+            margin-bottom: 20px; /* Add margin to space out the heading and the form */
+        }
+
+        form {
+            display: flex;
+            flex-direction: column; /* Stack form elements vertically */
+            align-items: center; /* Center form elements horizontally */
+        }
+
+        input[type="text"],
+        input[type="submit"] {
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%; /* Full width for input elements */
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff; /* Blue color for submit button */
+            color: #fff; /* White text color */
+            border: none;
+            cursor: pointer;
+            width: auto; /* Auto width for submit button */
+        }
+
+        .history {
+            margin-top: 20px; /* Added margin to separate history from the form */
+        }
+
+        .history li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container ">
+    <h1>Download Video file from YouTube</h1>
+    <form action="{% url 'youtube' %}" method="POST">
+        {% csrf_token %}
+        Enter Link:<br>
+        <input type="text" name="link" id=""><br><br>
+        <input type="submit" value="Download">
+    </form>
+    {% if message %}
+        <div>{{ message }}</div>
+    {% endif %}
+  </div>  
+  <br>
+  <br>
+  <br>
+  <div class="container history">
+    <h2>Download History</h2>
+    <ul>
+        {% for item in history %}
+            {{item.title}}<a href="{{ item.link }}" target="_blank">{{ item.link }}</a><br>
+        {% endfor %}
+        <form action="{% url 'clear_video_historey'%}" method="Get">
+            <input type="submit" value="Clear Download hostorey">
+        </form>
+        
+    </ul>
+  </div>  
+</body>
+</html>
